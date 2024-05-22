@@ -1,6 +1,6 @@
 # MERN_TODO
 
-todo's application using mern
+todo's application using mern (21-05-2024)
 
 # Code Runner
 
