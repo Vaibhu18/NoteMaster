@@ -64,7 +64,7 @@ export const getTodoByTodoId = async (req, res) => {
   try {
     const todoExist = await todoModel.findById(todoId);
     if (!todoExist) return res.status(404).json({ error: "Todo not exist" });
-    return res.status(200).json(todoExist);
+    return res.status(200).json({ todo: todoExist, message: "todo is found" });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }

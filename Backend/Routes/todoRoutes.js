@@ -8,8 +8,8 @@ import {
 } from "../Controller/todoController.js";
 export const todoRouter = express.Router();
 
-todoRouter.post("/createTodo/:userId", createTodo);
-todoRouter.get("/todos/:userId", getTodosByUserId); // multiple todos
-todoRouter.get("/todo/:todoId", getTodoByTodoId); // single todo
-todoRouter.put("/update/todo/:todoId", updateTodoByTodoId);
-todoRouter.delete("/delete/todo/:todoId", deleteTodoByTodoId);
+todoRouter.post("/api/createTodo/:userId", createTodo);
+todoRouter.get("/api/todos/:userId", getTodosByUserId); // multiple todos
+todoRouter.get("/api/todo/:todoId", getTodoByTodoId); // single todo
+todoRouter.put("/api/update/todo/:todoId", updateTodoByTodoId);
+todoRouter.delete("/api/delete/todo/:todoId", deleteTodoByTodoId);
