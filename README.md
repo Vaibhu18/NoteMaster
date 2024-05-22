@@ -23,4 +23,4 @@ it is a command-line tool used to initialize a new react project using Vite. it 
 
 ## Backend :
 
-### express, mongoose, dotenv, cors
+### express, mongoose, dotenv, cors, bcrypt
