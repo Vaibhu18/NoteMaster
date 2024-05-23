@@ -11,10 +11,16 @@ const Home = () => {
             <img src={logoImg} alt="logo" className="w-[150px] md:w-[200px]" />
           </div>
           <div className=" w-[50%] flex gap-2 md:gap-10 justify-center items-center">
-            <NavLink to={"/login"} className="bg-red-600 hover:bg-red-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
+            <NavLink
+              to={"/login"}
+              className="bg-red-600 hover:bg-red-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]"
+            >
               Login
             </NavLink>
-            <NavLink to={"/register"} className="bg-slate-700 hover:bg-slate-800 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
+            <NavLink
+              to={"/register"}
+              className="bg-slate-700 hover:bg-slate-800 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]"
+            >
               Signup
             </NavLink>
           </div>

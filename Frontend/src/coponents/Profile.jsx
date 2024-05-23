@@ -61,7 +61,10 @@ const Profile = () => {
                 <NavLink className="flex bg-yellow-600 hover:bg-yellow-700 md:px-4 px-4 py-2 text-white font-[500] rounded-[10px]">
                   <span class="material-symbols-outlined">hourglass</span>
                 </NavLink>
-                <NavLink to={"/profile/updateNote/:userId"} className="flex bg-blue-600 hover:bg-blue-700 md:px-4 px-4 py-2 text-white font-[500] rounded-[10px]">
+                <NavLink
+                  to={"/profile/updateNote/:userId"}
+                  className="flex bg-blue-600 hover:bg-blue-700 md:px-4 px-4 py-2 text-white font-[500] rounded-[10px]"
+                >
                   <span class="material-symbols-outlined">edit</span>
                 </NavLink>
                 <NavLink className="flex bg-red-600 hover:bg-red-700 md:px-4 px-4 py-2 text-white font-[500] rounded-[10px]">
