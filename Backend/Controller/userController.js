@@ -35,8 +35,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ error: "Incomplete input fields" });
 
     const userExist = await userModel.findOne({ email });
-    if (userExist.length == 0)
-      return res.status(404).json({ error: "No user found" });
+    if (!userExist) return res.status(404).json({ error: "No user found" });
 
     const isPasswordValid = await bcrypt.compare(password, userExist.password);
     if (!isPasswordValid) {
