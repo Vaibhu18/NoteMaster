@@ -3,7 +3,8 @@ import Home from "./coponents/Home";
 import Login from "./coponents/Login";
 import Registration from "./coponents/Registration";
 import Profile from "./coponents/Profile";
-import AddTodo from "./coponents/AddTodo";
+import AddTodo from "./coponents/CreateNote";
+import UpdateNote from "./coponents/UpdateNote";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Route path="/register" element={<Registration />} />
       <Route path="/profile/:userId" element={<Profile />} />
       <Route path="/profile/addTodo/:userId" element={<AddTodo />} />
+      <Route path="/profile/updateNote/:userId" element={<UpdateNote />} />
       <Route path="*" element={<h1>Not Found</h1>} />
     </Routes>
   );
