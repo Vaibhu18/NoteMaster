@@ -4,3 +4,4 @@ export const userRouter = express.Router();
 
 userRouter.post("/api/register", registerUser);
 userRouter.post("/api/login", loginUser);
+ 

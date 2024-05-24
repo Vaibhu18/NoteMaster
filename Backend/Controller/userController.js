@@ -1,5 +1,6 @@
 import { userModel } from "../Models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   try {
@@ -20,9 +21,11 @@ export const registerUser = async (req, res) => {
     });
 
     const createdUser = await newUser.save();
+    // const token = jwt.sign({ userId: newUser._id}, "vaibhav", { expiresIn: "1h" });
+    // console.log(token)
     return res
       .status(200)
-      .json({ message: "User created successfully", user: createdUser });
+      .json({ message: "User created successfully", user: newUser });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }

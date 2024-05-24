@@ -1,29 +1,54 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
+import toast from "react-hot-toast";
 
 const Registration = () => {
   const redirect = useNavigate();
+  const [user, setUser] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({
+      ...user,
+      [name]: value,
+    }));
+  };
+
+  const submitData = (e) => {
+    e.preventDefault();
+    createUser();
+    setUser({
+      fullName: "",
+      email: "",
+      password: "",
+    });
+  };
+
   const createUser = async (req, res) => {
-    const data = {
-      fullName: "Vaibhav Shinde",
-      email: "vaibhav@gmail.com",
-      password: "vaibhu@123",
+    let headers = {
+      Authorization: "vaibhav Shinde",
+      "Content-Type": "application/json",
     };
 
     await axios
-      .post("/api/register", data)
+      .post("/api/register", user, { headers })
       .then((res) => {
-        const token = res.data.token;
         const userId = res.data.user._id;
         const message = res.data.message;
-        localStorage.setItem("authToken", token);
+        // const token = res.data.token;
+        // localStorage.setItem("authToken", token);
+        toast.success(message, { position: "top-center" });
         redirect(`/profile/${userId}`);
       })
       .catch((error) => {
-        console.log(error.response.data.error);
+        console.log("error", error.response.data.error);
       });
   };
 
@@ -32,7 +57,13 @@ const Registration = () => {
       <div className="flex flex-col w-[100%] h-screen bg-slate-200 font-poppins">
         <div className="w-[100%] flex justify-around p-3 md:p-5 bg-slate-100">
           <div className="flex md:justify-center w-[50%]">
-            <img src={logoImg} alt="logo" className="w-[150px] md:w-[200px]" />
+            <NavLink to={"/"}>
+              <img
+                src={logoImg}
+                alt="logo"
+                className="w-[150px] md:w-[200px]"
+              />
+            </NavLink>
           </div>
           <div className=" w-[50%] flex gap-2 md:gap-10 justify-center items-center">
             <NavLink
@@ -50,7 +81,7 @@ const Registration = () => {
           </div>
         </div>
 
-        <div className="flex justify-center mt-[15  %] md:mt-[8%]">
+        <div className="flex justify-center mt-[15%] md:mt-[8%]">
           <div className=" w-[85%] md:w-[25%] p-3 rounded-[15px] shadow-[0px_0px_20px_-7px_black] bg-white">
             <p className="text-center font-[500] text-[19px]">
               Register for <span className="text-red-600 font-[700]">Note</span>
@@ -59,13 +90,15 @@ const Registration = () => {
             <p className="text-[14px] text-gray-400">
               Effortlessly organize your notes with NoteMaster!
             </p>
-            <form className="mt-2 md:px-2">
+            <form onSubmit={submitData} className="mt-2 md:px-2">
               <label htmlFor="" className="">
                 Full Name :
               </label>
               <input
                 type="text"
-                name="name"
+                name="fullName"
+                value={user.fullName}
+                onChange={handleChange}
                 placeholder="enter your name"
                 className="border-2 border-slate-300 rounded-[15px] w-[100%] py-1.5 px-3 mt-1 mb-3"
               />
@@ -75,6 +108,8 @@ const Registration = () => {
               <input
                 type="text"
                 name="email"
+                value={user.email}
+                onChange={handleChange}
                 placeholder="enter your email"
                 className="border-2 border-slate-300 rounded-[15px] w-[100%] py-1.5 px-3 mt-1 mb-3"
               />
@@ -82,13 +117,18 @@ const Registration = () => {
               <input
                 type="text"
                 name="password"
+                value={user.password}
+                onChange={handleChange}
                 placeholder="enter your password"
                 className="border-2 border-slate-300 rounded-[15px] w-[100%] py-1.5 px-3 mt-1 mb-4"
               />
               <div className="w-[100%] flex justify-center">
-                <NavLink className="w-[50%] text-center bg-red-600 hover:bg-red-700 px-4 py-2 text-white font-[500] rounded-[10px]">
+                <button
+                  type="submit"
+                  className="w-[50%] text-center bg-red-600 hover:bg-red-700 px-4 py-2 text-white font-[500] rounded-[10px]"
+                >
                   Register
-                </NavLink>
+                </button>
               </div>
             </form>
             <p className="mt-3 text-slate-400 text-[12px] mb-2">

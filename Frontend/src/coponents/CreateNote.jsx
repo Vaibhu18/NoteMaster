@@ -1,8 +1,49 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
+import toast from "react-hot-toast";
 
 const CreateNote = () => {
+  const param = useParams();
+  const redirect = useNavigate();
+  const [note, setNote] = useState({
+    title: "",
+    description: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNote((note) => ({
+      ...note,
+      [name]: value,
+    }));
+  };
+
+  const submitData = (e) => {
+    e.preventDefault();
+    createNote();
+    setNote({
+      title: "",
+      description: "",
+    });
+  };
+
+  const createNote = async () => {
+    await axios
+      .post(`/api/createNote/${param.userId}`, note)
+      .then((res) => {
+        const message = res.data.message;
+        toast.success(message);
+        return redirect(`/profile/${param.userId}`);
+      })
+      .catch((error) => {
+        if (error.response.data.error === "User does not exist") {
+          return redirect("/");
+        }
+      });
+  };
+
   return (
     <>
       <div className="flex flex-col w-[100%] h-screen bg-slate-200 font-poppins">
@@ -12,7 +53,7 @@ const CreateNote = () => {
           </div>
           <div className=" w-[50%] flex gap-2 md:gap-10 justify-center items-center">
             <NavLink
-              to={"/login"}
+              to={`/profile/${param.userId}`}
               className="bg-blue-600 hover:bg-blue-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]"
             >
               Profile
@@ -32,36 +73,40 @@ const CreateNote = () => {
               Create New Note
             </p>
 
-            <form className="mt-2 md:px-2">
+            <form onSubmit={submitData} className="mt-2 md:px-2">
               <label htmlFor="" className="">
                 Title :
               </label>
               <input
                 type="text"
                 name="title"
+                value={note.title}
+                onChange={handleChange}
                 placeholder="write a title"
                 className="border-2 border-slate-300 rounded-[15px] w-[100%] py-1.5 px-3 mt-1 mb-3"
               />
               <label htmlFor="">Description : </label>
               <textarea
                 name="description"
+                value={note.description}
+                onChange={handleChange}
                 placeholder="write description. . . "
                 className="border-2 border-slate-300 rounded-[15px] w-[100%] py-1.5 px-3 mt-1 mb-4"
               ></textarea>
 
               <div className="w-[100%] flex justify-center items-center gap-2">
                 <NavLink
-                  to={"/profile/:userId"}
+                  to={`/profile/${param.userId}`}
                   className="w-[50%] text-center bg-gray-600 hover:bg-gray-700 px-4 py-2 text-white font-[500] rounded-[10px]"
                 >
                   Cancle
                 </NavLink>
-                <NavLink
-                  to={"/login"}
+                <button
+                  type="submit"
                   className="w-[50%] text-center bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-[500] rounded-[10px]"
                 >
                   Add Note
-                </NavLink>
+                </button>
               </div>
             </form>
           </div>

@@ -1,14 +1,64 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const redirect = useNavigate();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({
+      ...user,
+      [name]: value,
+    }));
+  };
+
+  const submitData = (e) => {
+    e.preventDefault();
+    loginUser();
+    setUser({
+      email: "",
+      password: "",
+    });
+  };
+
+  const loginUser = async () => {
+    let headers = {
+      Authorization: "vaibhav Shinde",
+      "Content-Type": "application/json",
+    };
+    await axios
+      .post("/api/login", user, { headers })
+      .then((res) => {
+        const userId = res.data.user._id;
+        const message = res.data.message;
+        toast.success(message);
+        return redirect(`/profile/${userId}`);
+      })
+      .catch((error) => {
+        if (error.response.data.error == "No user found")
+          return redirect("/register");
+      });
+  };
+
   return (
     <>
       <div className="flex flex-col w-[100%] h-screen bg-slate-200 font-poppins">
         <div className="w-[100%] flex justify-around p-3 md:p-5 bg-slate-100">
           <div className="flex md:justify-center w-[50%]">
-            <img src={logoImg} alt="logo" className="w-[150px] md:w-[200px]" />
+            <NavLink to={"/"}>
+              <img
+                src={logoImg}
+                alt="logo"
+                className="w-[150px] md:w-[200px]"
+              />
+            </NavLink>
           </div>
           <div className=" w-[50%] flex gap-2 md:gap-10 justify-center items-center">
             <NavLink
@@ -35,13 +85,15 @@ const Login = () => {
             <p className="text-[14px] text-gray-400">
               Welcome back! Please log in to continue...
             </p>
-            <form className="mt-2 md:px-2">
+            <form onSubmit={submitData} className="mt-2 md:px-2">
               <label htmlFor="" className="">
                 Email Id :
               </label>
               <input
                 type="text"
                 name="email"
+                value={user.email}
+                onChange={handleChange}
                 placeholder="enter your email"
                 className="border-2 border-slate-300 rounded-[15px] w-[100%] py-1.5 px-3 mt-1 mb-3"
               />
@@ -49,16 +101,18 @@ const Login = () => {
               <input
                 type="text"
                 name="password"
+                value={user.password}
+                onChange={handleChange}
                 placeholder="enter your password"
                 className="border-2 border-slate-300 rounded-[15px] w-[100%] py-1.5 px-3 mt-1 mb-4"
               />
               <div className="w-[100%] flex justify-center">
-                <NavLink
-                  to={"/login"}
+                <button
+                  type="submit"
                   className="w-[50%] text-center bg-red-600 hover:bg-red-700 px-4 py-2 text-white font-[500] rounded-[10px]"
                 >
                   Login
-                </NavLink>
+                </button>
               </div>
             </form>
             <p className="mt-3 text-slate-400 text-[12px] mb-2">

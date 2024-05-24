@@ -8,7 +8,9 @@ const Home = () => {
       <div className="flex flex-col w-[100%] h-screen bg-slate-200 font-poppins">
         <div className="w-[100%] flex justify-around p-3 md:p-5 bg-slate-100">
           <div className="flex md:justify-center w-[50%]">
+            <NavLink to={"/"}>
             <img src={logoImg} alt="logo" className="w-[150px] md:w-[200px]" />
+            </NavLink>
           </div>
           <div className=" w-[50%] flex gap-2 md:gap-10 justify-center items-center">
             <NavLink
@@ -41,13 +43,13 @@ const Home = () => {
               <p className="p-1 text-slate-400 ">5 sec ago....</p>
               <div className="flex md:gap-3 gap-2 items-center justify-end">
                 <NavLink className="flex bg-yellow-600 hover:bg-yellow-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
-                  <span class="material-symbols-outlined">hourglass</span>
+                  <span className="material-symbols-outlined">hourglass</span>
                 </NavLink>
                 <NavLink className="flex bg-blue-600 hover:bg-blue-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
-                  <span class="material-symbols-outlined">edit</span>
+                  <span className="material-symbols-outlined">edit</span>
                 </NavLink>
                 <NavLink className="flex bg-red-600 hover:bg-red-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
-                  <span class="material-symbols-outlined">delete</span>
+                  <span className="material-symbols-outlined">delete</span>
                 </NavLink>
               </div>
             </div>
@@ -67,13 +69,13 @@ const Home = () => {
               <p className="p-1 text-slate-400 ">10 min ago....</p>
               <div className="flex md:gap-3 gap-2 items-center justify-end">
                 <NavLink className="flex bg-green-500 hover:bg-green-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
-                  <span class="material-symbols-outlined">check_circle</span>
+                  <span className="material-symbols-outlined">check_circle</span>
                 </NavLink>
                 <NavLink className="flex bg-blue-600 hover:bg-blue-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
-                  <span class="material-symbols-outlined">edit</span>
+                  <span className="material-symbols-outlined">edit</span>
                 </NavLink>
                 <NavLink className="flex bg-red-600 hover:bg-red-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
-                  <span class="material-symbols-outlined">delete</span>
+                  <span className="material-symbols-outlined">delete</span>
                 </NavLink>
               </div>
             </div>

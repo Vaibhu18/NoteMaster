@@ -26,7 +26,7 @@ export const createTodo = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Todo created successfully", todo: createdTodo });
+      .json({ message: "Note created successfully", todo: createdTodo });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }
@@ -56,22 +56,21 @@ export const getTodosByUserId = async (req, res) => {
 
 // get single todo
 export const getTodoByTodoId = async (req, res) => {
-  const todoId = req.params.todoId;
-
-  if (todoId.length !== 24)
-    return res.status(400).json({ error: "Invalid todoId in params" });
+  const noteId = req.params.noteId;
+  if (noteId.length !== 24)
+    return res.status(400).json({ error: "Invalid noteid in params" });
 
   try {
-    const todoExist = await todoModel.findById(todoId);
+    const todoExist = await todoModel.findById(noteId);
     if (!todoExist) return res.status(404).json({ error: "Todo not exist" });
-    return res.status(200).json({ todo: todoExist, message: "todo is found" });
+    return res.status(200).json({ note: todoExist, message: "todo is found" });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }
 };
 
 export const updateTodoByTodoId = async (req, res) => {
-  const todoId = req.params.todoId;
+  const todoId = req.params.noteId;
 
   if (todoId.length !== 24)
     return res.status(400).json({ error: "Invalid todoId in params" });
@@ -93,7 +92,8 @@ export const updateTodoByTodoId = async (req, res) => {
 };
 
 export const deleteTodoByTodoId = async (req, res) => {
-  const todoId = req.params.todoId;
+  const todoId = req.params.noteId;
+  console.log(todoId)
   if (todoId.length !== 24)
     return res.status(400).json({ error: "Invalid todoId in params" });
 
