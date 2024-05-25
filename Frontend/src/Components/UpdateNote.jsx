@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { REACT_APP_API_URL } from "../Utils/Constant";
 
 const UpdateNote = () => {
   const param = useParams();

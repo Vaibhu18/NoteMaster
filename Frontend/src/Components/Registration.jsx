@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
 import toast from "react-hot-toast";
+import { REACT_APP_API_URL } from "../Utils/Constant";
 
 const Registration = () => {
   const navigate = useNavigate();
