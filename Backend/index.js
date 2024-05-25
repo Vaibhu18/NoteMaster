@@ -10,7 +10,7 @@ app.use(express.json());
 // app.use(cors());
 app.use(
   cors({
-    origin: ["https://deploy-note-master.vercel.app"],
+    origin: ["https://deploy-note-master-api.vercel.app"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
