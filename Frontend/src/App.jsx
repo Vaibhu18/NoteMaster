@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./coponents/Home";
-import Login from "./coponents/Login";
-import Registration from "./coponents/Registration";
-import Profile from "./coponents/Profile";
-import AddTodo from "./coponents/CreateNote";
-import UpdateNote from "./coponents/UpdateNote";
-import ErrorPage from "./coponents/ErrorPage";
+import Home from "./Components/Home";
+import Login from "./Components/Login";
+import Registration from "./Components/Registration";
+import Profile from "./Components/Profile";
+import AddTodo from "./Components/CreateNote";
+import UpdateNote from "./Components/UpdateNote";
+import ErrorPage from "./Components/ErrorPage";
 
 const App = () => {
   return (
