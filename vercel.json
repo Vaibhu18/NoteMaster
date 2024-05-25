@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "name": "note-master",
+  "builds": [
+    {
+      "src": "Frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    },
+    {
+      "src": "Backend/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/Backend/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/Frontend/build/$1"
+    }
+  ]
+}
