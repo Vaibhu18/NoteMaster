@@ -16,7 +16,7 @@ const App = () => {
       <Route path="/profile/:userId" element={<Profile />} />
       <Route path="/profile/addTodo/:userId" element={<AddTodo />} />
       <Route path="/profile/updateNote/:noteId" element={<UpdateNote />} />
-      <Route path="*" element={<ErrorPage/>} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 };
