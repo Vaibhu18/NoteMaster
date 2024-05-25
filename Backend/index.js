@@ -8,7 +8,7 @@ import { noteRouter } from "./Routes/noteRoutes.js";
 const app = express();
 app.use(express.json());
 const corsOptions = {
-  origin: "https://note-master-seven.vercel.app/",
+  origin: "https://note-master-r8ex.vercel.app/",
   credentials: true,
 };
 app.use(cors(corsOptions));
