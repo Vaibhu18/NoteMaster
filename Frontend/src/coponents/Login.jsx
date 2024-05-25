@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const redirect = useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -29,21 +29,20 @@ const Login = () => {
   };
 
   const loginUser = async () => {
-    let headers = {
-      Authorization: "vaibhav Shinde",
-      "Content-Type": "application/json",
-    };
     await axios
-      .post("/api/login", user, { headers })
+      .post("/api/login", user)
       .then((res) => {
-        const userId = res.data.user._id;
-        const message = res.data.message;
-        toast.success(message);
-        return redirect(`/profile/${userId}`);
+        localStorage.setItem("authToken", res.data.token);
+        toast.success(res.data.message);
+        return navigate(`/profile/${res.data.user._id}`);
       })
       .catch((error) => {
-        if (error.response.data.error == "No user found")
-          return redirect("/register");
+        if (error.response.data.error == "No user found") {
+          toast.error("Please first register your self");
+          return navigate("/register");
+        }
+        if (error.response.data.error)
+          return toast.error(error.response.data.error);
       });
   };
 

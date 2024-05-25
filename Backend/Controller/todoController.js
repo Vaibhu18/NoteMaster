@@ -1,14 +1,10 @@
 import { todoModel } from "../Models/todoModel.js";
 import { userModel } from "../Models/userModel.js";
 
-export const createTodo = async (req, res) => {
+export const createNote = async (req, res) => {
   try {
     const userId = req.params.userId;
     const { title, description } = req.body;
-
-    if (userId.length !== 24) {
-      return res.status(400).json({ error: "Invalid userId in params" });
-    }
 
     if (!title || !description)
       return res.status(400).json({ error: "Incomplete input fields" });
@@ -17,16 +13,16 @@ export const createTodo = async (req, res) => {
     if (!userExist)
       return res.status(404).json({ error: "User does not exist" });
 
-    const createdTodo = new todoModel(req.body);
-    createdTodo.writer = userExist._id.toString();
-    userExist.todos.push(createdTodo._id.toString());
+    const createdNote = new todoModel(req.body);
+    createdNote.writer = userExist._id.toString();
+    userExist.todos.push(createdNote._id.toString());
 
     await userExist.save();
-    await createdTodo.save();
+    await createdNote.save();
 
     return res
       .status(200)
-      .json({ message: "Note created successfully", todo: createdTodo });
+      .json({ message: "Note created successfully", note: createdNote });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }
@@ -44,7 +40,9 @@ export const getTodosByUserId = async (req, res) => {
     if (!userExist)
       return res.status(404).json({ error: "User does not exist" });
 
-    const todosExist = await todoModel.find({ writer: userId });
+    const todosExist = await todoModel
+      .find({ writer: userId })
+      .sort({ updatedAt: -1 });
     if (todosExist.length === 0)
       return res.status(404).json({ error: "No todos found" });
 
@@ -71,6 +69,8 @@ export const getTodoByTodoId = async (req, res) => {
 
 export const updateTodoByTodoId = async (req, res) => {
   const todoId = req.params.noteId;
+  if (req.body.title.length == 0 || req.body.description.length == 0)
+    return res.status(400).json({ error: "Incomplete input fields" });
 
   if (todoId.length !== 24)
     return res.status(400).json({ error: "Invalid todoId in params" });
@@ -85,7 +85,7 @@ export const updateTodoByTodoId = async (req, res) => {
     if (!todoExist) return res.status(400).json({ error: "Todo not updated" });
     return res
       .status(200)
-      .json({ message: "Todo updated successfully", todo: todoExist });
+      .json({ message: "Note updated successfully", todo: todoExist });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }
@@ -93,13 +93,12 @@ export const updateTodoByTodoId = async (req, res) => {
 
 export const deleteTodoByTodoId = async (req, res) => {
   const todoId = req.params.noteId;
-  console.log(todoId)
   if (todoId.length !== 24)
-    return res.status(400).json({ error: "Invalid todoId in params" });
+    return res.status(400).json({ error: "Invalid noteId in params" });
 
   try {
     const todoExist = await todoModel.findById(todoId);
-    if (!todoExist) return res.status(404).json({ error: "Todo not exist" });
+    if (!todoExist) return res.status(404).json({ error: "Note not exist" });
 
     const userId = todoExist.writer.toString();
     const userExist = await userModel.findById(userId);
@@ -110,7 +109,7 @@ export const deleteTodoByTodoId = async (req, res) => {
     await userExist.save();
     return res
       .status(200)
-      .json({ message: "Todo deleted successfully", todo: deletedTodo });
+      .json({ message: "Note deleted successfully", todo: deletedTodo });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }

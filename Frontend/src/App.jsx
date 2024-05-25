@@ -5,6 +5,7 @@ import Registration from "./coponents/Registration";
 import Profile from "./coponents/Profile";
 import AddTodo from "./coponents/CreateNote";
 import UpdateNote from "./coponents/UpdateNote";
+import ErrorPage from "./coponents/ErrorPage";
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
       <Route path="/profile/:userId" element={<Profile />} />
       <Route path="/profile/addTodo/:userId" element={<AddTodo />} />
       <Route path="/profile/updateNote/:noteId" element={<UpdateNote />} />
-      <Route path="*" element={<h1>Not Found</h1>} />
+      <Route path="*" element={<ErrorPage/>} />
     </Routes>
   );
 };

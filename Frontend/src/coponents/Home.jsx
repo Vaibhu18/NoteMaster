@@ -9,7 +9,11 @@ const Home = () => {
         <div className="w-[100%] flex justify-around p-3 md:p-5 bg-slate-100">
           <div className="flex md:justify-center w-[50%]">
             <NavLink to={"/"}>
-            <img src={logoImg} alt="logo" className="w-[150px] md:w-[200px]" />
+              <img
+                src={logoImg}
+                alt="logo"
+                className="w-[150px] md:w-[200px]"
+              />
             </NavLink>
           </div>
           <div className=" w-[50%] flex gap-2 md:gap-10 justify-center items-center">
@@ -69,7 +73,9 @@ const Home = () => {
               <p className="p-1 text-slate-400 ">10 min ago....</p>
               <div className="flex md:gap-3 gap-2 items-center justify-end">
                 <NavLink className="flex bg-green-500 hover:bg-green-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
-                  <span className="material-symbols-outlined">check_circle</span>
+                  <span className="material-symbols-outlined">
+                    check_circle
+                  </span>
                 </NavLink>
                 <NavLink className="flex bg-blue-600 hover:bg-blue-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]">
                   <span className="material-symbols-outlined">edit</span>

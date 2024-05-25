@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import logoImg from "./Images/logoLite.png";
+import axios from "axios";
 import toast from "react-hot-toast";
+import logoImg from "./Images/logoLite.png";
 
 const CreateNote = () => {
   const param = useParams();
-  const redirect = useNavigate();
+  const navigate = useNavigate();
   const [note, setNote] = useState({
     title: "",
     description: "",
@@ -30,18 +30,39 @@ const CreateNote = () => {
   };
 
   const createNote = async () => {
+    try {
+      const res = await axios.post(`/api/createNote/${param.userId}`, note);
+      toast.success(res.data.message);
+      return navigate(`/profile/${param.userId}`);
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
+
+  const checkAutherisedUser = async () => {
+    const token = localStorage.getItem("authToken");
     await axios
-      .post(`/api/createNote/${param.userId}`, note)
-      .then((res) => {
-        const message = res.data.message;
-        toast.success(message);
-        return redirect(`/profile/${param.userId}`);
+      .get("/api/authenticateUser", {
+        params: {
+          param: param.userId,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .catch((error) => {
-        if (error.response.data.error === "User does not exist") {
-          return redirect("/");
-        }
+        navigate("/login");
       });
+  };
+
+  useEffect(() => {
+    checkAutherisedUser();
+  });
+
+  const logout = () => {
+    const tempToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjUxN2ZjZGE1M2JmYWMzNjFjMDc2NWUiLCJpYXQiOjE3MTY2MTcxNjUsImV4cCI6MTcxNjYyMDc2NX0.jtCJAseug7tdwvB6uEnYTjZLULL0SuMp33uQhwh7zMI";
+    localStorage.setItem("authToken", tempToken);
   };
 
   return (
@@ -59,7 +80,7 @@ const CreateNote = () => {
               Profile
             </NavLink>
             <NavLink
-              to={"/register"}
+              onClick={logout}
               className="bg-red-600 hover:bg-red-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]"
             >
               LogOut

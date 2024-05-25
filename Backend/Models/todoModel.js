@@ -5,10 +5,12 @@ const todoSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
     },
     description: {
       type: String,
       required: true,
+      trim: true,
     },
     writer: {
       type: mongoose.Schema.Types.ObjectId,

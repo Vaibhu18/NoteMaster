@@ -1,12 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
 import toast from "react-hot-toast";
 
 const Registration = () => {
-  const redirect = useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     fullName: "",
     email: "",
@@ -15,8 +14,8 @@ const Registration = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser((user) => ({
-      ...user,
+    setUser((prevUser) => ({
+      ...prevUser,
       [name]: value,
     }));
   };
@@ -31,25 +30,18 @@ const Registration = () => {
     });
   };
 
-  const createUser = async (req, res) => {
-    let headers = {
-      Authorization: "vaibhav Shinde",
-      "Content-Type": "application/json",
-    };
+  const createUser = async () => {
+    try {
+      const res = await axios.post("/api/register", user);
 
-    await axios
-      .post("/api/register", user, { headers })
-      .then((res) => {
-        const userId = res.data.user._id;
-        const message = res.data.message;
-        // const token = res.data.token;
-        // localStorage.setItem("authToken", token);
-        toast.success(message, { position: "top-center" });
-        redirect(`/profile/${userId}`);
-      })
-      .catch((error) => {
-        console.log("error", error.response.data.error);
-      });
+      localStorage.setItem("authToken", res.data.token);
+
+      toast.success(res.data.message, { position: "top-center" });
+
+      navigate(`/profile/${res.data.user._id}`);
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
   };
 
   return (
@@ -140,7 +132,7 @@ const Registration = () => {
             <p className="text-center m-2 text-gray-500 text-[15px]">
               Already a member?{" "}
               <NavLink
-                to={"/profile/:userId"}
+                to={"/login"}
                 className="text-red-600 font-[500] underline"
               >
                 Log in

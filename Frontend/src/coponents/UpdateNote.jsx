@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const UpdateNote = () => {
   const param = useParams();
-  const redirect = useNavigate();
+  const navigate = useNavigate();
 
   const [note, setNote] = useState({
     title: "",
@@ -28,10 +28,13 @@ const UpdateNote = () => {
       .put(`/api/update/note/${noteId}`, note)
       .then((res) => {
         toast.success(res.data.message);
-        return redirect(`/profile/${note.writer}`);
+        return navigate(`/profile/${note.writer}`);
       })
       .catch((error) => {
-        console.log(error.response);
+        if (error.response.data.error == "Todo not exist") {
+          toast.error(error.response.data.error);
+        } else if (error.response.data.error == "Incomplete input fields")
+          toast.error(error.response.data.error);
       });
   };
 
@@ -41,11 +44,17 @@ const UpdateNote = () => {
         const res = await axios.get(`/api/note/${param.noteId}`);
         setNote(res.data.note);
       } catch (error) {
-        console.log(error);
+        toast.error(error.response.data.error);
       }
     };
     getNote();
   }, [param.noteId]);
+
+  const logout = () => {
+    const tempToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjUxN2ZjZGE1M2JmYWMzNjFjMDc2NWUiLCJpYXQiOjE3MTY2MTcxNjUsImV4cCI6MTcxNjYyMDc2NX0.jtCJAseug7tdwvB6uEnYTjZLULL0SuMp33uQhwh7zMI";
+    localStorage.setItem("authToken", tempToken);
+  };
 
   return (
     <>
@@ -56,13 +65,14 @@ const UpdateNote = () => {
           </div>
           <div className=" w-[50%] flex gap-2 md:gap-10 justify-center items-center">
             <NavLink
-              to={"/login"}
+              to={`/profile/${note.writer}`}
               className="bg-blue-600 hover:bg-blue-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]"
             >
               Profile
             </NavLink>
             <NavLink
-              to={"/register"}
+              onClick={logout}
+              to={"/login"}
               className="bg-red-600 hover:bg-red-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]"
             >
               LogOut

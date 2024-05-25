@@ -1,29 +1,46 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useNavigate, useParams, NavLink } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
 import toast from "react-hot-toast";
+import { formatDistanceToNow, parseISO } from "date-fns";
 
 const Profile = () => {
   const param = useParams();
-  const redirect = useNavigate();
+  const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
 
+  const checkAutherisedUser = async () => {
+    const token = localStorage.getItem("authToken");
+    await axios
+      .get("/api/authenticateUser", {
+        params: {
+          param: param.userId,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .catch((error) => {
+        navigate("/login");
+      });
+  };
+
+  const getNotes = async () => {
+    await axios
+      .get(`/api/notes/${param.userId}`)
+      .then((res) => {
+        setNotes(res.data);
+      })
+      .catch((error) => {
+        if (error.response.data.error == "No todos found") {
+          navigate(`/profile/addTodo/${param.userId}`);
+        }
+      });
+  };
+
   useEffect(() => {
-    const getNotes = async () => {
-      await axios
-        .get(`/api/notes/${param.userId}`)
-        .then((res) => {
-          setNotes(res.data);
-        })
-        .catch((error) => {
-          if (error.response.data.error == "No todos found") {
-            toast("create your first note");
-            redirect(`/profile/addTodo/${param.userId}`);
-          }
-        });
-    };
+    checkAutherisedUser();
     getNotes();
   });
 
@@ -32,17 +49,15 @@ const Profile = () => {
       .get(`/api/note/${id}`)
       .then((res) => {
         let newObj = { ...res.data.note, status: !res.data.note.status };
-        let noteId = newObj._id;
         axios
-          .put(`/api/update/note/${noteId}`, newObj)
+          .put(`/api/update/note/${newObj._id}`, newObj)
           .then((res) => {
             if (newObj.status) {
               toast.success("Task is Completed");
             } else {
               toast.error("Task is pending");
             }
-
-            return redirect(`/profile/${newObj.writer}`);
+            return navigate(`/profile/${newObj.writer}`);
           })
           .catch((error) => {
             console.log(error.response);
@@ -54,16 +69,20 @@ const Profile = () => {
   };
 
   const deleteNote = async (id) => {
-    await axios
-      .delete(`/api/delete/note/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        toast.error(res.data.message);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+    await axios.delete(`/api/delete/note/${id}`).then((res) => {
+      toast.error(res.data.message);
+    });
     setNotes((prev) => prev.filter((e) => e._id != id));
+  };
+
+  const logout = () => {
+    const tempToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjUxN2ZjZGE1M2JmYWMzNjFjMDc2NWUiLCJpYXQiOjE3MTY2MTcxNjUsImV4cCI6MTcxNjYyMDc2NX0.jtCJAseug7tdwvB6uEnYTjZLULL0SuMp33uQhwh7zMI";
+    localStorage.setItem("authToken", tempToken);
+  };
+
+  const getdate = (date) => {
+    return formatDistanceToNow(parseISO(date), { addSuffix: true });
   };
 
   return (
@@ -81,7 +100,7 @@ const Profile = () => {
               Add Note
             </NavLink>
             <NavLink
-              to={"/register"}
+              onClick={logout}
               className="bg-red-600 hover:bg-red-700 md:px-4 px-3 py-2 text-white font-[500] rounded-[10px]"
             >
               LogOut
@@ -104,7 +123,7 @@ const Profile = () => {
                 {note.description}
               </p>
               <div className="flex mt-3 justify-between">
-                <p className="p-1 text-slate-400 ">5 sec ago....</p>
+                <p className="p-1 text-slate-400 ">{getdate(note.updatedAt)}</p>
                 <div className="flex md:gap-3 gap-2 items-center justify-end">
                   {note.status ? (
                     <NavLink
