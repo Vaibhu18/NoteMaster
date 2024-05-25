@@ -13,7 +13,7 @@ const Profile = () => {
   const checkAutherisedUser = async () => {
     const token = localStorage.getItem("authToken");
     await axios
-      .get("/api/authenticateUser", {
+      .get(`${REACT_APP_API_URL}/api/authenticateUser`, {
         params: {
           param: param.userId,
         },
@@ -28,7 +28,7 @@ const Profile = () => {
 
   const getNotes = async () => {
     await axios
-      .get(`/api/notes/${param.userId}`)
+      .get(`${REACT_APP_API_URL}/api/notes/${param.userId}`)
       .then((res) => {
         setNotes(res.data);
       })
@@ -46,11 +46,11 @@ const Profile = () => {
 
   const changeStatus = async (id) => {
     await axios
-      .get(`/api/note/${id}`)
+      .get(`${REACT_APP_API_URL}/api/note/${id}`)
       .then((res) => {
         let newObj = { ...res.data.note, status: !res.data.note.status };
         axios
-          .put(`/api/update/note/${newObj._id}`, newObj)
+          .put(`${REACT_APP_API_URL}/api/update/note/${newObj._id}`, newObj)
           .then((res) => {
             if (newObj.status) {
               toast.success("Task is Completed");
@@ -69,7 +69,7 @@ const Profile = () => {
   };
 
   const deleteNote = async (id) => {
-    await axios.delete(`/api/delete/note/${id}`).then((res) => {
+    await axios.delete(`${REACT_APP_API_URL}/api/delete/note/${id}`).then((res) => {
       toast.error(res.data.message);
     });
     setNotes((prev) => prev.filter((e) => e._id != id));

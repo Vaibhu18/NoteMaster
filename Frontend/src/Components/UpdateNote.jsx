@@ -25,7 +25,7 @@ const UpdateNote = () => {
     e.preventDefault();
     const noteId = note._id;
     axios
-      .put(`/api/update/note/${noteId}`, note)
+      .put(`${REACT_APP_API_URL}/api/update/note/${noteId}`, note)
       .then((res) => {
         toast.success(res.data.message);
         return navigate(`/profile/${note.writer}`);
@@ -41,7 +41,7 @@ const UpdateNote = () => {
   useEffect(() => {
     const getNote = async () => {
       try {
-        const res = await axios.get(`/api/note/${param.noteId}`);
+        const res = await axios.get(`${REACT_APP_API_URL}/api/note/${param.noteId}`);
         setNote(res.data.note);
       } catch (error) {
         toast.error(error.response.data.error);

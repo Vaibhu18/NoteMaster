@@ -3,6 +3,8 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import logoImg from "./Images/logoLite.png";
+import { REACT_APP_API_URL } from "../Utils/Constant";
+
 
 const CreateNote = () => {
   const param = useParams();
@@ -31,7 +33,7 @@ const CreateNote = () => {
 
   const createNote = async () => {
     try {
-      const res = await axios.post(`/api/createNote/${param.userId}`, note);
+      const res = await axios.post(`${REACT_APP_API_URL}/api/createNote/${param.userId}`, note);
       toast.success(res.data.message);
       return navigate(`/profile/${param.userId}`);
     } catch (error) {
@@ -42,7 +44,7 @@ const CreateNote = () => {
   const checkAutherisedUser = async () => {
     const token = localStorage.getItem("authToken");
     await axios
-      .get("/api/authenticateUser", {
+      .get(`${REACT_APP_API_URL}/api/authenticateUser`, {
         params: {
           param: param.userId,
         },

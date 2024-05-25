@@ -3,6 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import logoImg from "./Images/logoLite.png";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { REACT_APP_API_URL } from "../Utils/Constant";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ const Login = () => {
 
   const loginUser = async () => {
     await axios
-      .post("/api/login", user)
+      .post(`${REACT_APP_API_URL}/api/login`, user)
       .then((res) => {
         localStorage.setItem("authToken", res.data.token);
         toast.success(res.data.message);

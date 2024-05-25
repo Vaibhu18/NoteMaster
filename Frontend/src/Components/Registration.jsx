@@ -32,7 +32,7 @@ const Registration = () => {
 
   const createUser = async () => {
     try {
-      const res = await axios.post("/api/register", user);
+      const res = await axios.post(`${REACT_APP_API_URL}/api/register`, user);
 
       localStorage.setItem("authToken", res.data.token);
 
