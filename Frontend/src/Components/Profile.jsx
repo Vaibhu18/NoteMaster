@@ -43,7 +43,7 @@ const Profile = () => {
   useEffect(() => {
     checkAutherisedUser();
     getNotes();
-  });
+  }, []);
 
   const changeStatus = async (id) => {
     await axios
@@ -70,9 +70,11 @@ const Profile = () => {
   };
 
   const deleteNote = async (id) => {
-    await axios.delete(`${REACT_APP_API_URL}/api/delete/note/${id}`).then((res) => {
-      toast.error(res.data.message);
-    });
+    await axios
+      .delete(`${REACT_APP_API_URL}/api/delete/note/${id}`)
+      .then((res) => {
+        toast.error(res.data.message);
+      });
     setNotes((prev) => prev.filter((e) => e._id != id));
   };
 

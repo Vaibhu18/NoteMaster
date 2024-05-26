@@ -59,7 +59,7 @@ const CreateNote = () => {
 
   useEffect(() => {
     checkAutherisedUser();
-  });
+  },[]);
 
   const logout = () => {
     const tempToken =
