@@ -28,7 +28,7 @@ export const createNote = async (req, res) => {
   }
 };
 
-// get list of todos
+/* ================== get list of todos =================== */
 export const getTodosByUserId = async (req, res) => {
   try {
     const userId = req.params.userId;
