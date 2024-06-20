@@ -27,7 +27,7 @@ export const createNote = async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 };
-
+ 
 /* ================== get list of todos =================== */
 export const getTodosByUserId = async (req, res) => {
   try {
